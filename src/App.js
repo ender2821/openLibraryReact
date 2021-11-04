@@ -29,16 +29,18 @@ const TitleWrap = styled.ul`
 `;
 
 function App() {
-  const [bookSearch, setBookSearch] = useState('');
-  const onSearchHandler = event => {
-    setBookSearch(event.target.value);
-  }
 
+  // initial app states
   const [data, setdata] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [search, setSearch] = useState();
 
+  //book search
+  const [bookSearch, setBookSearch] = useState('');
+  const [search, setSearch] = useState();
+  const onSearchHandler = event => {
+    setBookSearch(event.target.value);
+  }
   const onSubmitHandler = () => {
     const searchValue = encodeURIComponent(bookSearch.trim()).replace(/ /g, '+');
     setSearch(searchValue);
@@ -54,8 +56,24 @@ function App() {
 
   }, [search]);
 
+  let bookData = data.docs;
+
+  // Filter Search Result List
+  const [bookFilter, setBookFilter] = useState('');
+  const [bookFilterResults, setBookFilterResults] = useState([])
+  const onFilterHandler = event => {
+    setBookFilter(event.target.value);
+    if(bookFilter !== '') {
+      const newBookData = bookData.filter((book) => {
+        return Object.values(book).join('').toLowerCase().includes(bookFilter.toLowerCase())
+      });
+      setBookFilterResults(newBookData);
+    } else {
+      setBookFilterResults(bookData);
+    }
+  }
+
   console.log(data);
-  console.log(bookSearch);
 
   if(loading){
     return (
@@ -74,8 +92,17 @@ function App() {
     <Main>
       <GlobalStyle />
       <Title>Open Books</Title>
-      <BookSearch onSearchHandler={onSearchHandler} onSubmitHandler={onSubmitHandler} bookSearch={bookSearch}/>
-      {data ? <TitleWrap>{data.docs.map((item, i) => <SearchItem key={i} item={item}/>)}</TitleWrap> : <p>No Data</p> }
+      <BookSearch 
+        onSearchHandler={onSearchHandler} 
+        onSubmitHandler={onSubmitHandler} 
+        bookSearch={bookSearch}
+        onFilterHandler={onFilterHandler} 
+        bookFilter={bookFilter}
+      />
+      { bookFilter.length < 1 ?
+        data ? <TitleWrap>{bookData.map((item, i) => <SearchItem key={i} item={item}/>)}</TitleWrap> : <p>No Data</p> 
+        : data ? <TitleWrap>{bookFilterResults.map((item, i) => <SearchItem key={i} item={item}/>)}</TitleWrap> : <p>No Data</p> 
+      }
     </Main>
   )
 }

@@ -9,6 +9,14 @@ const GlobalStyle = createGlobalStyle`
   box-sizing: border-box;
 }
 
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.2rem;
+}
+
 /* Remove default margin */
 body,
 h1,

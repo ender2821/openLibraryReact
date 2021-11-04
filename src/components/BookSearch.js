@@ -17,21 +17,38 @@ const SearchLabel = styled.label`
 
 `;
 
+const FilterLabel = styled.label`
+
+`;
+
+const SearchFilter = styled.input`
+
+`;
+
 const BookSearch = (props) => {
 
   return (
-    <SearchButton method="get" >
-      <SearchLabel htmlFor="search-field"></SearchLabel>
+    <SearchContain method="get" >
+      <SearchLabel htmlFor="search-field">Search for books</SearchLabel>
       <SearchInput
         value={props.bookSearch}
         onChange={props.onSearchHandler}
         type="text"
-        placeholder="Search for a book"
+        placeholder="Search for books"
         name="search"
         id="search-field"
       />
       <SearchButton onClick={props.onSubmitHandler}>Search</SearchButton>
-    </SearchButton>
+      <FilterLabel>Filter Search</FilterLabel>
+      <SearchFilter 
+        value={props.filterSearch}
+        onChange={props.onFilterHandler}
+        type="text"
+        placeholder="Filter Search"
+        name="Filter"
+        id="search-filter"
+      />
+    </SearchContain>
   )
 } 
 

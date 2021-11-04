@@ -20,15 +20,22 @@ width: 100%;
 
 const ItemText = styled.h3`
 display: block;
+font-size: 1.6rem;
 margin-top: auto;
-padding: 15px;
+padding: 15px 15px 0;
 text-align: center;
 width: 100%;
 `;
 
+const ItemAuthor = styled.p`
+  padding: 10px;
+  text-align: center;
+  font-size: 1.2rem;
+`;
+
 const SearchItem = (props) => {
   const item = props.item;
-
+  console.log(item.author_name);
   return (
     <Item>
       <ItemPhoto 
@@ -36,6 +43,7 @@ const SearchItem = (props) => {
         alt={item.title} 
       />
       <ItemText>{item.title}</ItemText>
+      <ItemAuthor>{item.hasOwnProperty('author_name') ? item.author_name.join(' / ') : ''}</ItemAuthor>
     </Item>
   )
 }
