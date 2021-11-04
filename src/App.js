@@ -18,8 +18,13 @@ const Title = styled.h1`
 `;
 
 const Loading = styled.h2`
+  display: block;
   font-size: 1.8rem;
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
   text-align: center;
+  width: 100%;
 `;
 
 const TitleWrap = styled.ul`
