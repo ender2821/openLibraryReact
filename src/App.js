@@ -2,6 +2,7 @@ import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 import GlobalStyle from './globalStyles';
 
+import BookSearch from './components/BookSearch';
 import SearchItem from './components/SearchItem';
 
 const Main = styled.div`
@@ -29,22 +30,32 @@ const TitleWrap = styled.ul`
 
 function App() {
   const [bookSearch, setBookSearch] = useState('');
+  const onSearchHandler = event => {
+    setBookSearch(event.target.value);
+  }
+
   const [data, setdata] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [search, setSearch] = useState();
+
+  const onSubmitHandler = () => {
+    const searchValue = encodeURIComponent(bookSearch.trim()).replace(/ /g, '+');
+    setSearch(searchValue);
+  }
 
   useEffect(() => {
     setLoading(true);
-    fetch('http://openlibrary.org/search.json?author=brandon%20sanderson')
+    fetch(`http://openlibrary.org/search.json?q=${search}`)
     .then((response) => response.json())
     .then((data) => setdata(data))
     .then(() => setLoading())
     .catch(setError);
 
-  }, []);
+  }, [search]);
 
-  console.log(data)
-
+  console.log(data);
+  console.log(bookSearch);
 
   if(loading){
     return (
@@ -63,6 +74,7 @@ function App() {
     <Main>
       <GlobalStyle />
       <Title>Open Books</Title>
+      <BookSearch onSearchHandler={onSearchHandler} onSubmitHandler={onSubmitHandler} bookSearch={bookSearch}/>
       {data ? <TitleWrap>{data.docs.map((item, i) => <SearchItem key={i} item={item}/>)}</TitleWrap> : <p>No Data</p> }
     </Main>
   )
