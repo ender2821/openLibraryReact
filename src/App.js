@@ -13,6 +13,7 @@ const Main = styled.div`
 
 const Title = styled.h1`
   font-size: 1.8rem;
+  padding: 20px;
   text-align: center;
 `;
 
@@ -47,13 +48,14 @@ function App() {
   }
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`http://openlibrary.org/search.json?q=${search}`)
-    .then((response) => response.json())
-    .then((data) => setdata(data))
-    .then(() => setLoading())
-    .catch(setError);
-
+    if(search) {
+      setLoading(true);
+      fetch(`http://openlibrary.org/search.json?q=${search}`)
+      .then((response) => response.json())
+      .then((data) => setdata(data))
+      .then(() => setLoading())
+      .catch(setError);
+    }
   }, [search]);
 
   let bookData = data.docs;
@@ -99,10 +101,11 @@ function App() {
         onFilterHandler={onFilterHandler} 
         bookFilter={bookFilter}
       />
-      { bookFilter.length < 1 ?
-        data ? <TitleWrap>{bookData.map((item, i) => <SearchItem key={i} item={item}/>)}</TitleWrap> : <p>No Data</p> 
-        : data ? <TitleWrap>{bookFilterResults.map((item, i) => <SearchItem key={i} item={item}/>)}</TitleWrap> : <p>No Data</p> 
-      }
+      {search ? 
+        bookFilter.length < 1 ?
+          data ? <TitleWrap>{bookData.map((item, i) => <SearchItem key={i} item={item}/>)}</TitleWrap> : <p>No Data</p> 
+          : data ? <TitleWrap>{bookFilterResults.map((item, i) => <SearchItem key={i} item={item}/>)}</TitleWrap> : <p>No Data</p> 
+      : ''}
     </Main>
   )
 }

@@ -35,7 +35,6 @@ const ItemAuthor = styled.p`
 
 const SearchItem = (props) => {
   const item = props.item;
-  console.log(item.author_name);
   return (
     <Item>
       <ItemPhoto 
